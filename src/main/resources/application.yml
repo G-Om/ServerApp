@@ -1,0 +1,19 @@
+
+server:
+  port: 8081
+
+sprign:
+  datasource:
+    url: jdbc:mysql://localhost:3306/microserver
+    username: root
+    password: 1234
+    driver-class-name: org.msyql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      format_sql: true
+    database: mysql
+
+
