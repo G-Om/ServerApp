@@ -6,10 +6,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -28,17 +26,20 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain)
             throws ServletException, IOException {
+
         final String authHeader = request.getHeader("authorization");
         final String jwt;   // contains actual JWT Token
         if(authHeader == null || !authHeader.startsWith("Bearer ")){
             filterChain.doFilter(request,response);
             return;
         }
-        jwt = authHeader.substring(7);  // returns a substring by eliminating Bearar and an extra space
 
-        String clientRole = jwtService.extractUsername(jwt);
-        if(clientRole != null && SecurityContextHolder.getContext().getAuthentication() == null){
-            System.out.println("role found");
+        jwt = authHeader.substring(7);  // returns a substring by eliminating Bearer and an extra space
+
+        String clientid = jwtService.extractClientid(jwt);
+
+        if(clientid != null && SecurityContextHolder.getContext().getAuthentication() == null){
+
              if(jwtService.isTokenValid(jwt)){
                  System.out.println("Token Valid");
                  UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(

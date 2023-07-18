@@ -29,8 +29,4 @@ public class Controller {
         return ResponseEntity.ok("Hello Welcome from secured endpoint.");
     }
 
-    @GetMapping("/generate")
-    public String genToken(){
-        return service.generateToken();
-    }
 }

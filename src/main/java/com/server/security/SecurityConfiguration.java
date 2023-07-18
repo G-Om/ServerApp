@@ -27,16 +27,17 @@ public class SecurityConfiguration {
                         (sessionManagement)->
                                 sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
+                .addFilterBefore(JwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+
                 .authorizeHttpRequests((authorize)->{
                     authorize
-                            .requestMatchers("/server/generate")
+                            .requestMatchers("/server/hello")
                             .permitAll()
-                            .requestMatchers("/server")
+                            .requestMatchers("/server/**")
                             .authenticated()
                             .anyRequest()
                             .authenticated();
-                })
-                .addFilterBefore(JwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                });
 
         return http.build();
     }
